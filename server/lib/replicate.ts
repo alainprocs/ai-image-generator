@@ -11,9 +11,14 @@ export async function generateImage(prompt: string): Promise<string> {
         Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
       },
       body: JSON.stringify({
-        version: "black-forest-labs/flux-schnell",
+        version: "black-forest-labs/flux-1.1-pro",
         input: {
           prompt,
+          aspect_ratio: "1:1",
+          output_format: "webp",
+          output_quality: 80,
+          safety_tolerance: 2,
+          prompt_upsampling: true
         },
       }),
     });

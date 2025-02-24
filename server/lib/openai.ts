@@ -14,16 +14,20 @@ export async function expandPrompt(prompt: string): Promise<string> {
       messages: [
         {
           role: "system",
-          content: "You are an expert prompt writer. You specialize in writing descriptive prompts for the AI image tool Stable Diffusion.",
+          content: "You are an expert prompt writer. You specialize in writing descriptive prompts for the AI image tool Stable Diffusion. Your prompts should be detailed and focus on high-quality image attributes, lighting, atmosphere, and style.",
         },
         {
           role: "user",
-          content: `Write a concise prompt for this: ${prompt}. Only output the prompt itself, no extra text.`,
+          content: `Write a detailed and enhanced prompt for this image idea: "${prompt}". Only output the prompt itself, no extra text.`,
         },
       ],
     });
 
-    return response.choices[0].message.content || prompt;
+    const expandedPrompt = response.choices[0].message.content;
+    console.log("Original prompt:", prompt);
+    console.log("Enhanced prompt:", expandedPrompt);
+
+    return expandedPrompt || prompt;
   } catch (error) {
     console.error("OpenAI API error:", error);
     return prompt;

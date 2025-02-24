@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import type { Image } from "@shared/schema";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
+  const [generatedImage, setGeneratedImage] = useState<Image | null>(null);
   const { toast } = useToast();
 
   const { mutate: generateImage, isPending } = useMutation({
@@ -16,7 +18,8 @@ export default function Home() {
       const res = await apiRequest("POST", "/api/generate", { prompt });
       return res.json();
     },
-    onSuccess: (data) => {
+    onSuccess: (data: Image) => {
+      setGeneratedImage(data);
       toast({
         title: "Image generated!",
         description: "Your AI image has been created successfully.",
@@ -81,6 +84,25 @@ export default function Home() {
                   <p className="text-sm text-muted-foreground">
                     This may take a few moments...
                   </p>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {generatedImage && (
+            <Card className="mt-8 p-6">
+              <div className="space-y-4">
+                <p className="font-medium">Generated Image</p>
+                <div className="aspect-square relative overflow-hidden rounded-lg">
+                  <img
+                    src={generatedImage.imageUrl}
+                    alt={generatedImage.prompt}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  <p>Original prompt: {generatedImage.prompt}</p>
+                  <p>Enhanced prompt: {generatedImage.expandedPrompt}</p>
                 </div>
               </div>
             </Card>

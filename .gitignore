@@ -1,6 +1,31 @@
+# Dependencies
 node_modules
 dist
-.DS_Store
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build outputs
 server/public
+.DS_Store
 vite.config.ts.*
 *.tar.gz
+
+# Editor files
+.vscode
+.idea
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache directories
+.cache
+.npm
+.eslintcache
+
+# Environment secrets
+.replenv
+.secrets

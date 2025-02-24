@@ -4,7 +4,6 @@ if (!process.env.REPLICATE_API_TOKEN) {
 
 export async function generateImage(prompt: string): Promise<string> {
   try {
-    // Start the prediction
     const response = await fetch("https://api.replicate.com/v1/predictions", {
       method: "POST",
       headers: {
@@ -12,15 +11,9 @@ export async function generateImage(prompt: string): Promise<string> {
         Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
       },
       body: JSON.stringify({
-        version: "435061a1b5a4c1e26740464bf786efdfa9cb3a3ac488595a2de23e143fdb0117",
+        version: "black-forest-labs/flux-schnell",
         input: {
           prompt,
-          image_dimensions: "1024x1024",
-          negative_prompt: "low quality, blurry, distorted",
-          scheduler: "K_EULER",
-          num_outputs: 1,
-          guidance_scale: 7.5,
-          num_inference_steps: 50,
         },
       }),
     });
@@ -38,7 +31,6 @@ export async function generateImage(prompt: string): Promise<string> {
         {
           headers: {
             Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
-            "Content-Type": "application/json",
           },
         }
       );

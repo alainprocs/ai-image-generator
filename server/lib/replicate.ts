@@ -24,6 +24,8 @@ export async function generateImage(prompt: string): Promise<string> {
     });
 
     const prediction = await response.json();
+    console.log("Initial prediction response:", prediction);
+
     if (!prediction.id) {
       throw new Error("Failed to start image generation");
     }
@@ -41,9 +43,16 @@ export async function generateImage(prompt: string): Promise<string> {
       );
 
       result = await pollResponse.json();
+      console.log("Poll response:", result);
 
-      if (result.status === "succeeded" && result.output && result.output[0]) {
-        return result.output[0];
+      if (result.status === "succeeded") {
+        // Handle both array and single string output formats
+        if (Array.isArray(result.output)) {
+          return result.output[0];
+        } else if (typeof result.output === "string") {
+          return result.output;
+        }
+        throw new Error("Unexpected output format from Replicate");
       }
 
       if (result.status === "failed") {
